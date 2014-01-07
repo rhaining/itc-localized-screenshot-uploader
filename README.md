@@ -8,7 +8,7 @@ It does *not* take screenshots for you. It is somewhat involved, but ultimately 
 ***
 
 #### Step 1
-Take screenshots & place into a folder structure of language/device/position.png (where device is ipad, iphone4, or iphone5). E.g., english/ipad/1.png. Put them all in a directory on your desktop called 'screenshots' (or, update the php script to reflect wherever you want the dir to be).
+Take screenshots & place into a folder structure of language/device/position.png (where device is ipad, iphone, or iphone5). E.g., english/ipad/1.png. Put them all in a directory on your desktop called 'screenshots' (or, update the php script to reflect wherever you want the dir to be).
 
 #### Step 2
 Run screenshots.php – you may need to alter input or output directories.  This will move all your screenshots into ~/Desktop/screenshots_for_upload/, as well as output XML for your metadata.
