@@ -1,52 +1,73 @@
 #!/usr/bin/php
 <?php
-
+#
+# Put your screenshots in the INPUT_DIR and name them like:
+#     en_US-ios4in-portrait-screen1.png
+#         OR
+#     en_US-ios4in-screen1.png
+#
 $user_home_dir = $_SERVER['HOME'];
-$input_dir = "$user_home_dir/Desktop/screenshots";
-$output_dir = "$user_home_dir/Desktop/screenshots_for_upload";
+$screen_shots_dir = "$user_home_dir/Desktop/screenshots";
+$itmps_dir = "$user_home_dir/Desktop";
 
-if (!file_exists($input_dir)) {
-    print "Please put your screenshots in $input_dir\n";
-    exit();
+/*
+ * STEP 1: INHALE SCREEN SHOTS
+ */
+file_exists($screen_shots_dir) or die ("Please put your screenshots in $screen_shots_dir");
+$screen_shots_by_locale_and_device = array();
+foreach (glob("$screen_shots_dir/*.[pP][nN][gG]") as $screen_shot) {
+	list($locale, $device, $name) = explode('+', basename($screen_shot));
+    $screen_shots_by_locale_and_device[$locale][$device][] = basename($screen_shot);
 }
 
-if (!file_exists($output_dir)) {
-    mkdir($output_dir);
+/*
+ * STEP 2: INHALE ITUNES CONNECT EXPORT
+ */
+$itmsps = glob("$itmps_dir/*.itmsp/metadata.xml");
+if (count($itmsps) != 1)
+	die ("Was expecting 1 .itmsp file, found ".count($itmsps));
+$itmsp_parsed = simplexml_load_file($itmsps[0]);
+
+/*
+ * STEP 3: ITERATE ON THE SCREEN SHOTS
+ */
+
+$tmp_file_output = '';
+foreach ($screen_shots_by_locale_and_device as $locale => $screen_shots_by_device) {
+	// Save all screen shot XML data
+	$xml_to_insert = '<software_screenshots>';
+	$xml_for_screenshots .= "\n\n\nSCREEN SHOTS FOR LOCALE: $locale\n\n";
+	foreach ($screen_shots_by_device as $device => $screen_shots)
+		foreach ($screen_shots as $position => $screen_shot)
+			$xml_to_insert .= xmlChunk($device, $position+1, "$screen_shots_dir/$screen_shot", $screen_shot) . "\n";
+	$xml_to_insert .= '</software_screenshots>';
+	$tmp_file_output .= "\n\n\nSCREEN SHOTS FOR LOCALE: $locale\n\n" . $xml_to_insert;
+
+	// Find part of itmsp file to shove XML into
+	$matched_itmsp_locale = NULL;
+	foreach ($itmsp_parsed->software->software_metadata->versions->version->locales->locale as $itmsp_locale) 
+		if ($locale == (string)$itmsp_locale->attributes()->name)
+			$matched_itmsp_locale = $itmsp_locale;
+
+	// Shove it
+	if ($matched_itmsp_locale) {
+		echo "Splicing in screenshots for $locale\n";
+		unset($matched_itmsp_locale->software_screenshots);
+		// https://stackoverflow.com/questions/3418019/simplexml-append-one-tree-to-another
+		$dom1 = dom_import_simplexml($matched_itmsp_locale);
+		$dom2 = dom_import_simplexml(simplexml_load_string($xml_to_insert));
+		$dom2 = $dom1->ownerDocument->importNode($dom2, TRUE);
+		$dom1->appendChild($dom2);
+	} else
+		echo "Screenshots found for locale $locale but no matching metadata found in .itmsp, skipping\n";
 }
 
-$root_dh  = opendir($input_dir);
-while (false !== ($lang_dir = readdir($root_dh))) {
-    if (isRealFileOrDir($lang_dir)) {
-        $lang_dir_path = "$input_dir/$lang_dir";
-        $lang_dh = opendir($lang_dir_path);
-        print "$lang_dir\n\n";
-        while (false !== ($device_dir = readdir($lang_dh))) {
-            if (isRealFileOrDir($device_dir)) {
-                $device_path = "$lang_dir_path/$device_dir";
-                $device_dh = opendir($device_path);
-                $position = 1;
-                while (false !== ($image_name = readdir($device_dh))) {
-                    if (isRealFileOrDir($image_name)) {
-                        $full_image_path = "$device_path/$image_name";
-                        // print "$full_image_path\n";
-                        $display_target = translateDevice($device_dir);
-                        $new_image_name = $lang_dir . "_" . $display_target . "_" . $image_name;
-                        $output_path = "$output_dir/$new_image_name";
-                        // print $output_path . "\n";
-                        copy($full_image_path, $output_path);
-                        print xmlChunk($display_target, $position, $output_path, $new_image_name);
-                        print "\n";
-                        $position++;
-                    }
-                }
-                closedir($device_dh);
-            }
-        }
-        closedir($lang_dh);
-        print "\n\n\n\n";
-    }
-}
-closedir($root_dh);
+file_put_contents("$screen_shots_dir/xml_chunks.txt", $tmp_file_output);
+echo "Saved XML chunks of ".count($screen_shots_by_locale_and_device, COUNT_RECURSIVE)." screen shots to $screen_shots_dir/xml_chunks.txt\n";
+
+$itmsp_parsed->asXML("$screen_shots_dir/metadata.xml");
+echo "Saved updated metadata.xml file to $screen_shots_dir/metadata.xml\n";
+
 
 function xmlChunk($display_target, $position, $file_path, $file_name)
 {
@@ -62,12 +83,6 @@ function xmlChunk($display_target, $position, $file_path, $file_name)
 END;
 }
 
-function isRealFileOrDir($test)
-{
-    $firstletter = substr($test, 0, 1);
-
-    return $firstletter != '.';
-}
 
 function translateDevice($device)
 {
