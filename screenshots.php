@@ -25,8 +25,9 @@ foreach (glob("$screen_shots_dir/*.[pP][nN][gG]") as $screen_shot) {
  */
 $itmsps = glob("$itmps_dir/*.itmsp/metadata.xml");
 if (count($itmsps) != 1)
-	die ("Was expecting 1 .itmsp file, found ".count($itmsps));
-$itmsp_parsed = simplexml_load_file($itmsps[0]);
+	echo "WARNING: Was expecting 1 .itmsp file, found ".count($itmsps).". Continuing without itmsp integration.\n";
+else
+	$itmsp_parsed = simplexml_load_file($itmsps[0]);
 
 /*
  * STEP 3: ITERATE ON THE SCREEN SHOTS
@@ -43,11 +44,14 @@ foreach ($screen_shots_by_locale_and_device as $locale => $screen_shots_by_devic
 	$xml_to_insert .= '</software_screenshots>';
 	$tmp_file_output .= "\n\n\nSCREEN SHOTS FOR LOCALE: $locale\n\n" . $xml_to_insert;
 
+	if (!isset($itmsp_parsed))
+		continue;
+
 	// Find part of itmsp file to shove XML into
 	$matched_itmsp_locale = NULL;
-	foreach ($itmsp_parsed->software->software_metadata->versions->version->locales->locale as $itmsp_locale) 
-		if ($locale == (string)$itmsp_locale->attributes()->name)
-			$matched_itmsp_locale = $itmsp_locale;
+    foreach ($itmsp_parsed->software->software_metadata->versions->version->locales->locale as $itmsp_locale) 
+        if ($locale == (string)$itmsp_locale->attributes()->name)
+            $matched_itmsp_locale = $itmsp_locale;
 
 	// Shove it
 	if ($matched_itmsp_locale) {
@@ -62,12 +66,13 @@ foreach ($screen_shots_by_locale_and_device as $locale => $screen_shots_by_devic
 		echo "Screenshots found for locale $locale but no matching metadata found in .itmsp, skipping\n";
 }
 
-file_put_contents("$screen_shots_dir/xml_chunks.txt", $tmp_file_output);
-echo "Saved XML chunks of ".count($screen_shots_by_locale_and_device, COUNT_RECURSIVE)." screen shots to $screen_shots_dir/xml_chunks.txt\n";
+file_put_contents("$screen_shots_dir/xml_chunks_DEBUG.txt", $tmp_file_output);
+echo "Saved XML chunks of ".count($screen_shots_by_locale_and_device, COUNT_RECURSIVE)." screen shots to $screen_shots_dir/xml_chunks_DEBUG.txt\n";
 
-$itmsp_parsed->asXML("$screen_shots_dir/metadata.xml");
-echo "Saved updated metadata.xml file to $screen_shots_dir/metadata.xml\n";
-
+if (isset($itmsp_parsed)) {
+    $itmsp_parsed->asXML("$screen_shots_dir/metadata.xml");
+    echo "Saved updated metadata.xml file to $screen_shots_dir/metadata.xml\n";
+}
 
 function xmlChunk($display_target, $position, $file_path, $file_name)
 {
