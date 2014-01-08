@@ -3,7 +3,7 @@ iTC Localized Screenshot Uploader
 
 This script helps prepare localized screenshots for delivery to iTunes Connect via the Transporter.
 
-It does *not* take screenshots for you. It is somewhat involved, but ultimately if you have localized screenshots for lots of languages, it should save you time/pain.
+It does *not* take screenshots for you. Generate the screenshots by yourself and name the files properly, or use a screenshot autamation tool like https://github.com/jonathanpenn/ui-screen-shooter to make all shots for all languages and devices at once.
 
 ***
 
