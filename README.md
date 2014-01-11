@@ -14,7 +14,7 @@ Download your app's metadata package from Apple.
 This will save the .itmsp file to your desktop.
 
 #### Step 2
-Take screenshots & save them to `~/Desktop/screenshots` with the format like `cmn-Hans.ios4in.portrait.screen1.png`. The correct device names are `Mac`, `iOS-3.5-in`, `iOS-4-in` or `iOS-iPad` `ios35in`, `ios4in`, and `ipad`. The orientation part is optional. ((HELP: WHERE IS APPLE DOCUMENTATION ON LOCALES IN THIS FORMAT?))
+Take screenshots & save them to `~/Desktop/screenshots` with the format like `cmn-Hans___ios4in___portrait___screen1.png`. The correct device names are `Mac`, `iOS-3.5-in`, `iOS-4-in` or `iOS-iPad` `ios35in`, `ios4in`, and `ipad`. The orientation part is optional. ((HELP: WHERE IS APPLE DOCUMENTATION ON LOCALES IN THIS FORMAT?))
 
 Optional: write a UI script and automate generation of screenshots for all devices and localizations using https://github.com/jonathanpenn/ui-screen-shooter
 

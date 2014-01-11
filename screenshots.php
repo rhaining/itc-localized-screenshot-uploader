@@ -2,9 +2,9 @@
 <?php
 #
 # Put your screenshots in the INPUT_DIR and name them like:
-#     en_US.ios4in.portrait.screen1.png
+#     en_US___ios4in___portrait___screen1.png
 #         OR
-#     en_US.ios4in.screen1.png
+#     en_US___ios4in___screen1.png
 #
 $user_home_dir = $_SERVER['HOME'];
 $screen_shots_dir = "$user_home_dir/Desktop/screenshots";
@@ -16,7 +16,7 @@ $itmps_dir = "$user_home_dir/Desktop";
 file_exists($screen_shots_dir) or die ("Please put your screenshots in $screen_shots_dir");
 $screen_shots_by_locale_and_device = array();
 foreach (glob("$screen_shots_dir/*.[pP][nN][gG]") as $screen_shot) {
-	list($locale, $device, $name) = explode('.', basename($screen_shot));
+	list($locale, $device, $name) = explode('___', basename($screen_shot));
     $screen_shots_by_locale_and_device[$locale][$device][] = basename($screen_shot);
 }
 
