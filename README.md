@@ -6,7 +6,7 @@ This script helps prepare localized screenshots for delivery to iTunes Connect v
 ***
 
 #### Step 1
-Download your app's metadata package from Apple. 
+Open your app in iTunes Connect and create a new version. Ensure your app is listed in the "Prepare for Upload" status. Download your app's metadata package from Apple. 
 
     PATH="$PATH:/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/MacOS/itms/bin/"
     iTMSTransporter -m lookupMetadata -u [iTunes Connect user name] -p [iTunes Connect password] -vendor_id [App SKU] -destination ~/Desktop
@@ -22,7 +22,9 @@ Optional: write a UI script and automate generation of screenshots for all devic
 Run `php screenshots.php` – this will add the XML chunks you need and make a fresh copy of your `metadata.xml` in the screenshots folder. 
 
 #### Step 4
-If you right-click & select 'show package contents' on your itmsp file, you'll see all the pretty metadata in `metadata.xml`. Copy (and replace) all the stuff from the screenshots/ folder into this folder.
+Copy the contents of "screenshots" on your desktop into the itmsp file on your desktop (right-click -> show package contents to access the latter). Or use the following command:
+
+    cp ~/Desktop/screenshots/* ~/Desktop/*.itmsp
 
 #### Step 5
 Verify your upload:

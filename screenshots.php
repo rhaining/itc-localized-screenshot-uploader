@@ -26,9 +26,12 @@ foreach (glob("$screen_shots_dir/*.[pP][nN][gG]") as $screen_shot) {
 $itmsps = glob("$itmps_dir/*.itmsp/metadata.xml");
 if (count($itmsps) != 1)
 	echo "WARNING: Was expecting 1 .itmsp file, found ".count($itmsps).". Continuing without itmsp integration.\n";
-else
+else {
 	$itmsp_parsed = simplexml_load_file($itmsps[0]);
-
+	$itmsp_parsed->registerXPathNamespace("n", "http://apple.com/itunes/importer");
+	while ($a = $itmsp_parsed->xpath('//n:keywords'))
+		unset($a[0][0]);
+}
 /*
  * STEP 3: ITERATE ON THE SCREEN SHOTS
  */
