@@ -61,7 +61,7 @@ On top of that, I wanted localized users for my screenshots, so I pass an Enviro
 
 There's a bug in the Transporter that removes newlines from any textual metadata, so I don't recommend using it for that purpose at this time.
 
-For more info, check out the App Metadata Specs and the Transporter User Guide from https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa/wo/2.0
+For more info, check out the App Metadata Specs and the Transporter User Guide from https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa/ra/resources/download/TransporterQuickStartUserGuide/pdf
 
 ------------------
 
