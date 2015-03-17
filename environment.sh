@@ -5,7 +5,9 @@ then
 fi
 
 ITMSFOLDERNAME=./itms
-ITMSSCREENSHOTSFOLDERNAME="$ITMSFOLDERNAME/screenshots"
+ITMSSCREENSHOTSFOLDERNAME="$ITMSFOLDERNAME/screenshots/"
+ITMSSCREENSHOTSFOLDERRAWNAME="$ITMSSCREENSHOTSFOLDERNAME-raw/"
+
 PATH="$PATH:/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/MacOS/itms/bin/"
 
 if [ -z "$ITMSUSER" ];
@@ -24,7 +26,7 @@ then
 	read -p "SKU:" ITMSSKU
 fi
 
-if [ -f "$ITMSFOLDERNAME" ];
+if [ -d "$ITMSFOLDERNAME" ];
 then
    echo "Directory $ITMSFOLDERNAME already exists. This might be expected but it might mean old assets lying around"
 else
@@ -32,10 +34,18 @@ else
    mkdir $ITMSFOLDERNAME
 fi
 
-if [ -f "$ITMSSCREENSHOTSFOLDERNAME" ];
+if [ -d "$ITMSSCREENSHOTSFOLDERNAME" ];
 then
    echo "Directory $ITMSSCREENSHOTSFOLDERNAME already exists. This might be expected but it might mean old screenshots lying around"
 else
    echo "Making directory $ITMSSCREENSHOTSFOLDERNAME for the screenshots"
    mkdir $ITMSSCREENSHOTSFOLDERNAME
+fi
+
+if [ -d "$ITMSSCREENSHOTSFOLDERRAWNAME" ];
+then
+   echo "Directory $ITMSSCREENSHOTSFOLDERRAWNAME already exists. This might be expected but it might mean old screenshots lying around"
+else
+   echo "Making directory $ITMSSCREENSHOTSFOLDERRAWNAME for the screenshots"
+   mkdir $ITMSSCREENSHOTSFOLDERRAWNAME
 fi
