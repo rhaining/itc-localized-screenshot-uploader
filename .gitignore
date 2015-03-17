@@ -1,0 +1,36 @@
+# Xcode
+build/*
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.xcworkspace
+!default.xcworkspace
+xcuserdata
+profile
+*.moved-aside
+
+#OSX Generated Stuff
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Icon?
+ehthumbs.db
+Thumbs.db
+
+# Custom
+DerivedData/*
+*/DerivedData/*
+coverage.xml
+test-report.xml
+*/test-reports/*
+*.xarchive
+
+# ITMS
+itms/*

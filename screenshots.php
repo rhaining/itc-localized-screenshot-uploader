@@ -2,13 +2,14 @@
 <?php
 #
 # Put your screenshots in the INPUT_DIR and name them like:
-#     en_US___ios4in___portrait___screen1.png
+#     en_US___ios-4-in___portrait___screen1.png
 #         OR
-#     en_US___ios4in___screen1.png
+#     en_US___ios-4-in___screen1.png
 #
-$user_home_dir = $_SERVER['HOME'];
-$screen_shots_dir = "$user_home_dir/Desktop/screenshots";
-$itmps_dir = "$user_home_dir/Desktop";
+
+$ITMSFOLDERNAME = "itms";
+$screen_shots_dir = "$ITMSFOLDERNAME";
+$itmps_dir = "$ITMSFOLDERNAME";
 
 /*
  * STEP 1: INHALE SCREEN SHOTS
@@ -73,8 +74,8 @@ file_put_contents("$screen_shots_dir/xml_chunks_DEBUG.txt", $tmp_file_output);
 echo "Saved XML chunks of ".count($screen_shots_by_locale_and_device, COUNT_RECURSIVE)." screen shots to $screen_shots_dir/xml_chunks_DEBUG.txt\n";
 
 if (isset($itmsp_parsed)) {
-    $itmsp_parsed->asXML("$screen_shots_dir/metadata.xml");
-    echo "Saved updated metadata.xml file to $screen_shots_dir/metadata.xml\n";
+    $itmsp_parsed->asXML("$itmsps");
+    echo "Saved updated metadata.xml file to $itmsps\n";
 }
 
 function xmlChunk($display_target, $position, $file_path, $file_name)
