@@ -34,3 +34,4 @@ test-report.xml
 
 # ITMS
 itms/*
+environment-local.sh

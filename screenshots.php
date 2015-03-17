@@ -8,7 +8,7 @@
 #
 
 $ITMSFOLDERNAME = "itms";
-$screen_shots_dir = "$ITMSFOLDERNAME";
+$screen_shots_dir = "$ITMSFOLDERNAME/screenshots";
 $itmps_dir = "$ITMSFOLDERNAME";
 
 /*
@@ -74,8 +74,8 @@ file_put_contents("$screen_shots_dir/xml_chunks_DEBUG.txt", $tmp_file_output);
 echo "Saved XML chunks of ".count($screen_shots_by_locale_and_device, COUNT_RECURSIVE)." screen shots to $screen_shots_dir/xml_chunks_DEBUG.txt\n";
 
 if (isset($itmsp_parsed)) {
-    $itmsp_parsed->asXML("$itmsps");
-    echo "Saved updated metadata.xml file to $itmsps\n";
+    $itmsp_parsed->asXML("$itmsps[0]");
+    echo "Saved updated metadata.xml file to $itmsps[0]\n";
 }
 
 function xmlChunk($display_target, $position, $file_path, $file_name)

@@ -1,3 +1,9 @@
+if [ -f "environment-local.sh" ];
+then
+	echo "Using local environment variables in environment-local"
+	. environment-local.sh
+fi
+
 ITMSFOLDERNAME=./itms
 ITMSSCREENSHOTSFOLDERNAME="$ITMSFOLDERNAME/screenshots"
 PATH="$PATH:/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/MacOS/itms/bin/"
@@ -18,7 +24,7 @@ then
 	read -p "SKU:" ITMSSKU
 fi
 
-if [ ! -f "$ITMSFOLDERNAME" ];
+if [ -f "$ITMSFOLDERNAME" ];
 then
    echo "Directory $ITMSFOLDERNAME already exists. This might be expected but it might mean old assets lying around"
 else
@@ -26,7 +32,7 @@ else
    mkdir $ITMSFOLDERNAME
 fi
 
-if [ ! -f "$ITMSSCREENSHOTSFOLDERNAME" ];
+if [ -f "$ITMSSCREENSHOTSFOLDERNAME" ];
 then
    echo "Directory $ITMSSCREENSHOTSFOLDERNAME already exists. This might be expected but it might mean old screenshots lying around"
 else
