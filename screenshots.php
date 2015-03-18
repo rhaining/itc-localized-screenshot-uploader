@@ -8,8 +8,11 @@
 #
 
 $ITMSFOLDERNAME = "itms";
-$screen_shots_dir = "$ITMSFOLDERNAME/screenshots";
+# $screen_shots_dir = "$ITMSFOLDERNAME/screenshots";
 $itmps_dir = "$ITMSFOLDERNAME";
+
+$itmsps_dirs = glob("$itmps_dir/*.itmsp");
+$screen_shots_dir=$itmsps_dirs[0];
 
 /*
  * STEP 1: INHALE SCREEN SHOTS
@@ -76,6 +79,7 @@ echo "Saved XML chunks of ".count($screen_shots_by_locale_and_device, COUNT_RECU
 if (isset($itmsp_parsed)) {
     $itmsp_parsed->asXML("$itmsps[0]");
     echo "Saved updated metadata.xml file to $itmsps[0]\n";
+    echo "Now you can run verify-metadata.sh to check it all looks fine\n";
 }
 
 function xmlChunk($display_target, $position, $file_path, $file_name)
@@ -90,18 +94,4 @@ function xmlChunk($display_target, $position, $file_path, $file_name)
                                     <checksum type="md5">$md5</checksum>
                                 </software_screenshot>
 END;
-}
-
-
-function translateDevice($device)
-{
-    if ($device == 'iphone4') {
-        return 'iOS-3.5-in';
-    } elseif ($device == 'iphone5') {
-        return 'iOS-4-in';
-    } elseif ($device == 'ipad') {
-        return 'iOS-iPad';
-    } else {
-        print "\n\n\n******\n\nWTF $device\n\n\n";
-    }
 }

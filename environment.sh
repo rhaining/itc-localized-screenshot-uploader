@@ -5,8 +5,7 @@ then
 fi
 
 ITMSFOLDERNAME=./itms
-ITMSSCREENSHOTSFOLDERNAME="$ITMSFOLDERNAME/screenshots/"
-ITMSSCREENSHOTSFOLDERRAWNAME="$ITMSSCREENSHOTSFOLDERNAME-raw/"
+ITMSSCREENSHOTSFOLDERRAWNAME="$ITMSFOLDERNAME/screenshots-raw"
 
 PATH="$PATH:/Applications/Xcode.app/Contents/Applications/Application Loader.app/Contents/MacOS/itms/bin/"
 
@@ -32,14 +31,6 @@ then
 else
    echo "Making directory $ITMSFOLDERNAME for the itmsp package"
    mkdir $ITMSFOLDERNAME
-fi
-
-if [ -d "$ITMSSCREENSHOTSFOLDERNAME" ];
-then
-   echo "Directory $ITMSSCREENSHOTSFOLDERNAME already exists. This might be expected but it might mean old screenshots lying around"
-else
-   echo "Making directory $ITMSSCREENSHOTSFOLDERNAME for the screenshots"
-   mkdir $ITMSSCREENSHOTSFOLDERNAME
 fi
 
 if [ -d "$ITMSSCREENSHOTSFOLDERRAWNAME" ];
